@@ -1,5 +1,5 @@
 
-module Pikmv
+module Pkmv
 
 
   def self.date_to_dirname date

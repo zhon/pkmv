@@ -1,10 +1,10 @@
 
-require 'pikmv/date_to_dirname'
+require 'pkmv/date_to_dirname'
 require 'test_helper'
 
-module Pikmv
+module Pkmv
 
-  describe Pikmv do
+  describe Pkmv do
 
     describe 'date_to_dirname' do
 
@@ -13,7 +13,7 @@ module Pikmv
         it "raises exception" do
           skip
           date = Time.parse 'not a valid date'
-          err = -> { Pikmv.date_to_dirname(date) }.must_raise ArgumentError
+          err = -> { Pkmv.date_to_dirname(date) }.must_raise ArgumentError
           err.message.must_equal "'#{date}' is not a valid date"
         end
 
@@ -23,12 +23,12 @@ module Pikmv
 
         it "2016/11/01" do
           date = Time.parse "2016/11/01"
-          Pikmv.date_to_dirname(date).must_equal "2016-11-01"
+          Pkmv.date_to_dirname(date).must_equal "2016-11-01"
         end
 
         it "2016-10-29 17:05:04 -0600" do
           date = Time.parse "2016-10-29 17:05:04 -0600"
-          Pikmv.date_to_dirname(date).must_equal "2016-10-29"
+          Pkmv.date_to_dirname(date).must_equal "2016-10-29"
         end
       end
 

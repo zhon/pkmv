@@ -1,35 +1,35 @@
-require "pikmv/version"
+require "pkmv/version"
 
-require 'pikmv/date_to_dirname'
+require 'pkmv/date_to_dirname'
 
 require 'exif'
 require 'yaml'
 require 'fileutils'
 
-module Pikmv
+module Pkmv
 
   FileUtils = FileUtils::DryRun
 
   INPUT_DIRECTORY = '/Volumes/M16/X-T1_Backup/XT-2/'
   OUTPUT_DIRECTORY = './'
 
+  def self.filename_to_output_directory(input_filename, output_dir_base)
+    dirname = nil
+    begin
+      data = Exif::Data.new(input_filename)
+      dirname = Pkmv.date_to_dirname(data.date_time)
+    rescue=>e
+      puts "#{input_filename} has no EXIF data or is not readable"
+      dirname = Pkmv.date_to_dirname(File.ctime input_filename)
+    end
+    File.join(dirname, File.extname(input_filename)[1..-1].downcase)
+  end
+
   Dir.glob(File.join INPUT_DIRECTORY, '**', '*.*').each do |filename|
     next if File.directory?(filename)
 
     new_dir = filename_to_output_directory(filename, OUTPUT_DIRECTORY)
 
-  end
-
-  def self.filename_to_output_directory(input_filename, output_dir_base)
-    dirname = nil
-    begin
-      data = Exif::Data.new(filename)
-      dirname = date_to_dirname(data.date_time)
-    rescue=>e
-      puts "#{filename} has no EXIF data or is not readable"
-      dirname = date_to_dirname(File.ctime filename)
-    end
-    File.join(dirname, File.extname(filename)[1..-1].downcase)
   end
 
   require 'set'

@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class PikmvTest < Minitest::Test
+class PkmvTest < Minitest::Test
   def test_that_it_has_a_version_number
-    refute_nil ::Pikmv::VERSION
+    refute_nil ::Pkmv::VERSION
   end
 
 end
