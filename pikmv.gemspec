@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'pikmv/version'
+require 'pkmv/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "pikmv"
-  spec.version       = Pikmv::VERSION
+  spec.name          = "pkmv"
+  spec.version       = Pkmv::VERSION
   spec.authors       = ["zhon"]
   spec.email         = ["zhon@xmission.com"]
 
   spec.summary       = %q{Tools for handling image files.}
   spec.description   = %q{}
-  spec.homepage      = "http://github.com/zhon/pikmv"
+  spec.homepage      = "http://github.com/zhon/pkmv"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
