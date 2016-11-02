@@ -8,8 +8,6 @@ require 'fileutils'
 
 module Pkmv
 
-  FileUtils = FileUtils::DryRun
-
   INPUT_DIRECTORY = '/Volumes/M16/X-T1_Backup/XT-2/'
   OUTPUT_DIRECTORY = './'
 
@@ -34,6 +32,8 @@ module Pkmv
 
   require 'set'
   class FileCopier
+    FileUtils = FileUtils::DryRun
+
 
     def initialize
       @dir_created = Set.new

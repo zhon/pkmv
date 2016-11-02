@@ -2,6 +2,8 @@
 require 'pkmv/date_to_dirname'
 require 'test_helper'
 
+require 'time'
+
 module Pkmv
 
   describe Pkmv do
@@ -12,7 +14,7 @@ module Pkmv
 
         it "raises exception" do
           skip
-          date = Time.parse 'not a valid date'
+          date = ''
           err = -> { Pkmv.date_to_dirname(date) }.must_raise ArgumentError
           err.message.must_equal "'#{date}' is not a valid date"
         end
