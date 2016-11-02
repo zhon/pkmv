@@ -42,13 +42,35 @@ module Pkmv
 
   fc = FileCopier.new
 
-  Dir.glob(File.join INPUT_DIRECTORY, '**', '*.*').each do |filename|
-    next if File.directory?(filename)
+  files = Dir.glob(File.join INPUT_DIRECTORY, '**', '*.JPG')
 
+  files.each do |filename|
     new_dir = filename_to_output_directory(filename, OUTPUT_DIRECTORY)
     fc.cp filename, new_dir
-
   end
+
+  sound_thread = Thread.new {
+    `say "Finished #{
+      files.size.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+    } JPEG."`
+  }
+
+  # total files 2,613
+
+  jpg_file_count = files.size
+
+  files = Dir.glob(File.join INPUT_DIRECTORY, '**', '*.[^J][^P][^G]')
+  files.each do |filename|
+    new_dir = filename_to_output_directory(filename, OUTPUT_DIRECTORY)
+    fc.cp filename, new_dir
+  end
+
+  other_file_count = files.size
+
+  puts jpg_file_count + other_file_count
+
+  sound_thread.join
+
 
 
 
