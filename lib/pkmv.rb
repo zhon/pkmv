@@ -23,17 +23,9 @@ module Pkmv
     File.join(dirname, File.extname(input_filename)[1..-1].downcase)
   end
 
-  Dir.glob(File.join INPUT_DIRECTORY, '**', '*.*').each do |filename|
-    next if File.directory?(filename)
-
-    new_dir = filename_to_output_directory(filename, OUTPUT_DIRECTORY)
-
-  end
-
   require 'set'
   class FileCopier
     FileUtils = FileUtils::DryRun
-
 
     def initialize
       @dir_created = Set.new
@@ -46,6 +38,16 @@ module Pkmv
       end
       FileUtils.cp filename, new_dir
     end
+  end
+
+  fc = FileCopier.new
+
+  Dir.glob(File.join INPUT_DIRECTORY, '**', '*.*').each do |filename|
+    next if File.directory?(filename)
+
+    new_dir = filename_to_output_directory(filename, OUTPUT_DIRECTORY)
+    fc.cp filename, new_dir
+
   end
 
 
