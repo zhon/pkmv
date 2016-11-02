@@ -1,9 +1,6 @@
 require "pkmv/version"
 
-require 'pkmv/date_to_dirname'
-
 require 'exif'
-require 'yaml'
 require 'fileutils'
 
 module Pkmv
