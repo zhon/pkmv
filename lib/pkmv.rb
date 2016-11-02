@@ -8,21 +8,8 @@ require 'fileutils'
 
 module Pkmv
 
-
   INPUT_DIRECTORY = '/Volumes/M16/X-T1_Backup/XT-2/'
   OUTPUT_DIRECTORY = './'
-
-  def self.filename_to_output_directory(input_filename, output_dir_base)
-    dirname = nil
-    begin
-      data = Exif::Data.new(input_filename)
-      dirname = Pkmv.date_to_dirname(data.date_time)
-    rescue=>e
-      puts "#{input_filename} has no EXIF data or is not readable"
-      dirname = Pkmv.date_to_dirname(File.ctime input_filename)
-    end
-    File.join(dirname, File.extname(input_filename)[1..-1].downcase)
-  end
 
   require 'set'
   class FileCopier
@@ -43,49 +30,52 @@ module Pkmv
 
   class ImageRelocator
 
+    def initialize(input=INPUT_DIRECTORY,
+                   output_base=OUTPUT_DIRECTORY)
+      @input = input
+      @output_base = output_base
+    end
+
     def relocate
       fc = FileCopier.new
+      jpg_files = Dir.glob(File.join @input, '**', '*.JPG')
+      relocate_files(fc, jpg_files)
+      notify_jpeg_completion(jpg_files.count)
+      other_files = Dir.glob(File.join @input, '**', '*.[^J][^P][^G]')
+      relocate_files(fc, other_files)
+    end
 
-      files = Dir.glob(File.join INPUT_DIRECTORY, '**', '*.JPG')
-
+    def relocate_files(fc, files)
       files.each do |filename|
-        new_dir = Pkmv.filename_to_output_directory(filename, OUTPUT_DIRECTORY)
-        fc.cp filename, new_dir
+        relocate_file(fc, filename)
       end
+    end
 
+    def relocate_file(fc, filename)
+      new_dir = output_file_path(filename, @output_base)
+      fc.cp filename, new_dir
+    end
+
+    def notify_jpeg_completion(count)
       sound_thread = Thread.new {
         `say "Finished #{
-      files.size.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
+          count.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
         } JPEGs."`
       }
+    end
 
-      # total files 2,613
-
-      jpg_file_count = files.size
-
-      files = Dir.glob(File.join INPUT_DIRECTORY, '**', '*.[^J][^P][^G]')
-      files.each do |filename|
-        new_dir = Pkmv.filename_to_output_directory(filename, OUTPUT_DIRECTORY)
-        fc.cp filename, new_dir
+    def output_file_path(input_filename, output_dir_base)
+      dirname = nil
+      begin
+        data = Exif::Data.new(input_filename)
+        dirname = Pkmv.date_to_dirname(data.date_time)
+      rescue=>e
+        puts "#{input_filename} has no EXIF data or is not readable"
+        dirname = Pkmv.date_to_dirname(File.ctime input_filename)
       end
-
-      other_file_count = files.size
-
-      puts jpg_file_count + other_file_count
-
-      sound_thread.join
+      File.join(dirname, File.extname(input_filename)[1..-1].downcase)
     end
 
   end
-
-  ImageRelocator.new.relocate
-
-
-  # take an input directory
-  # take an output directory
-  # parse picture file to get shot date
-  # mkdir_p to create date directory
-  # move image file into output/date directory
-  # move jpg to output/date/jpg directory
 
 end
