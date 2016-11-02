@@ -11,6 +11,10 @@ module Pkmv
   INPUT_DIRECTORY = '/Volumes/M16/X-T1_Backup/XT-2/'
   OUTPUT_DIRECTORY = './'
 
+  def self.date_to_dirname date
+    date.strftime("%Y-%m-%d")
+  end
+
   require 'set'
   class FileCopier
     FileUtils = FileUtils::DryRun
@@ -73,7 +77,7 @@ module Pkmv
         puts "#{input_filename} has no EXIF data or is not readable"
         dirname = Pkmv.date_to_dirname(File.ctime input_filename)
       end
-      File.join(dirname, File.extname(input_filename)[1..-1].downcase)
+      File.join(output_dir_base, File.extname(input_filename)[1..-1].downcase, dirname)
     end
 
   end
