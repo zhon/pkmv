@@ -33,8 +33,8 @@ module Pkmv
 
     def cp(filename, new_dir)
       unless @dir_created.include? new_dir
-        @dir_created.add new_dir
         FileUtils.mkdir_p new_dir
+        @dir_created.add new_dir
       end
       FileUtils.cp filename, new_dir
     end
