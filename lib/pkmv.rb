@@ -33,6 +33,7 @@ module Pkmv
 
     def initialize(input=INPUT_DIRECTORY,
                    output_base=OUTPUT_DIRECTORY)
+      raise ArgumentError.new("Output directory (#{output_base}) doesn't exist.") unless File.directory? output_base
       @input = input
       @output_base = output_base
     end

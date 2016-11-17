@@ -40,5 +40,22 @@ module Pkmv
       end
 
     end
+
+  end
+
+  describe Pkmv::ImageRelocator do
+
+    describe 'initalization' do
+
+      it 'raises if output directory doesnt exist' do
+        input_dir = './'
+        output_dir = 'not a directory'
+
+        err = -> { ImageRelocator.new(input_dir, output_dir) }.must_raise ArgumentError
+        err.message.must_equal "Output directory (#{output_dir}) doesn't exist."
+      end
+
+    end
+
   end
 end
