@@ -5,8 +5,10 @@ require 'fileutils'
 
 module Pkmv
 
-  INPUT_DIRECTORY = '/Volumes/M16/X-T1_Backup/XT-2/'
-  OUTPUT_DIRECTORY = './'
+  INPUT_DIRECTORY = '/Volumes/Untitled/DCIM/'
+  OUTPUT_DIRECTORY = '/Users/zhon/Pictures/X_T2'
+
+  #FileUtils = FileUtils::DryRun
 
   def self.date_to_dirname date
     date.strftime("%Y-%m-%d")
@@ -14,7 +16,6 @@ module Pkmv
 
   require 'set'
   class FileCopier
-    FileUtils = FileUtils::DryRun
 
     def initialize
       @dir_created = Set.new
