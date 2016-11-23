@@ -6,7 +6,8 @@ require 'fileutils'
 module Pkmv
 
   INPUT_DIRECTORY = '/Volumes/Untitled/DCIM/'
-  OUTPUT_DIRECTORY = '/Users/zhon/Pictures/X_T2'
+  OUTPUT_DIRECTORY = '/Volumes/M16/X-T2_Backup'
+  #OUTPUT_DIRECTORY = '/Users/zhon/Pictures/X_T2'
 
   #FileUtils = FileUtils::DryRun
 
