@@ -4,10 +4,15 @@ require 'pkmv/thread_pool'
 describe ThreadPool do
 
   it 'will create thread_count number of threads' do
+    threads = Set.new
+    t_counter = -> { sleep 0.001; threads << Thread.current }
     tp = ThreadPool.new(3)
+    3.times do
+      tp << t_counter
+    end
     tp.process
-    tp.instance_variable_get(:@threads).size.must_equal 3
     tp.finish
+    threads.size.must_equal 3
   end
 
   it '@queue must contain an item after being pushed' do
@@ -54,15 +59,15 @@ describe ThreadPool do
   end
 
   it 'will execute in parallel' do
-    tp = ThreadPool.new(4)
-    t = Time.now
-    tp.push -> { sleep 1.0/1000 }
-    tp.push -> { sleep 1.0/1000 }
-    tp.push -> { sleep 1.0/1000 }
-    tp.push -> { sleep 1.0/1000 }
-    tp.finish
+    thread_count = 4
+    tp = ThreadPool.new(thread_count)
+    thread_count.times do
+      tp.push -> { sleep 1.0/1000 }
+    end
+    t = Time.now.to_f
     tp.process
-    (Time.now - t  < 2.0/1000).must_equal TRUE
+    tp.finish
+    Time.now.to_f.must_be_close_to t, 2.0/1000
   end
 
   ############ Property based TDD

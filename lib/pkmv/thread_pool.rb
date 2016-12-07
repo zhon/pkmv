@@ -15,6 +15,7 @@ class ThreadPool
   def push item
     @queue.push item
   end
+  alias :<< push
 
   def process
     @threads = @thread_count.times.map do
