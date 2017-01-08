@@ -1,4 +1,6 @@
 require 'pkmv/thread_pool'
+require 'rantly'
+require 'rantly/minitest_extensions'
 
 
 describe ThreadPool do
@@ -59,15 +61,18 @@ describe ThreadPool do
   end
 
   it 'will execute in parallel' do
-    thread_count = 4
-    tp = ThreadPool.new(thread_count)
-    thread_count.times do
-      tp.push -> { sleep 1.0/1000 }
-    end
-    t = Time.now.to_f
-    tp.process
-    tp.finish
-    Time.now.to_f.must_be_close_to t, 2.0/1000
+    property_of {
+      range 2, 100
+    }.check {|tc|
+      tp = ThreadPool.new(tc)
+      tc.times do
+        tp.push -> { sleep 1.0/1000 }
+      end
+      t = Time.now.to_f
+      tp.process
+      tp.finish
+      Time.now.to_f.must_be_close_to t+1.0/1000, tc * 0.3/1000, "Thread count #{tc}"
+    }
   end
 
   ############ Property based TDD
