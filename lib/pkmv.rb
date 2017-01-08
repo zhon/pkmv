@@ -5,11 +5,14 @@ require 'fileutils'
 
 module Pkmv
 
-  INPUT_DIRECTORY = '/Volumes/Untitled/DCIM/'
+  INPUT_DISK = '/Volumes/Untitled'
+  INPUT_DIRECTORY = "#{INPUT_DISK}/DCIM/"
   OUTPUT_DIRECTORY = '/Volumes/M16/X-T2_Backup'
   #OUTPUT_DIRECTORY = '/Users/zhon/Pictures/X_T2'
 
   #FileUtils = FileUtils::DryRun
+  #
+  #System "umount #{INPUT_DIRECTORY}"
 
   def self.date_to_dirname date
     date.strftime("%Y-%m-%d")
