@@ -5,14 +5,9 @@ require 'fileutils'
 
 module Pkmv
 
-  INPUT_DISK = '/Volumes/Untitled'
-  INPUT_DIRECTORY = "#{INPUT_DISK}/DCIM/"
-  OUTPUT_DIRECTORY = '/Volumes/M16/X-T2_Backup'
-  #OUTPUT_DIRECTORY = '/Users/zhon/Pictures/X_T2'
-
   #FileUtils = FileUtils::DryRun
   #
-  #System "umount #{INPUT_DIRECTORY}"
+  #System "sudo umount #{INPUT_DIRECTORY}"
 
   def self.date_to_dirname date
     date.strftime("%Y-%m-%d")
@@ -36,8 +31,8 @@ module Pkmv
 
   class ImageRelocator
 
-    def initialize(input=INPUT_DIRECTORY,
-                   output_base=OUTPUT_DIRECTORY)
+    def initialize(input,
+                   output_base)
       raise ArgumentError.new("Output directory (#{output_base}) doesn't exist.") unless File.directory? output_base
       raise ArgumentError.new("Input directory (#{input}) doesn't exist.") unless File.directory? input
       @input = input

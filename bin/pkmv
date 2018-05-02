@@ -3,7 +3,25 @@
 source_root = File.expand_path(File.dirname(__FILE__) + "/..")
 $LOAD_PATH.unshift("#{source_root}/lib")
 
+require 'thor'
 require 'pkmv'
 
+class CLI < Thor
+  INPUT_DISK = '/Volumes/Untitled'
+  INPUT_DIRECTORY = "#{INPUT_DISK}/DCIM/"
+  OUTPUT_DIRECTORY = '/Volumes/M18/X-T2_Backup'
 
-Pkmv::ImageRelocator.new.relocate
+
+  desc "copy", "from INPUT to OUTPUT"
+  option :input, default: INPUT_DIRECTORY
+  option :output, default: OUTPUT_DIRECTORY
+  def copy
+    puts options
+    Pkmv::ImageRelocator.new(options[:input], options[:output]).relocate
+  end
+
+  default_task :copy
+end
+
+
+CLI.start
